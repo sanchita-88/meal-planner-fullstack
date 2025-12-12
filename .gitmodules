@@ -1,0 +1,6 @@
+[submodule "frontend"]
+	path = frontend
+	url = https://github.com/sanchita-88/meal-planner-ui.git
+[submodule "backend"]
+	path = backend
+	url = https://github.com/sanchita-88/meal-planner.git
