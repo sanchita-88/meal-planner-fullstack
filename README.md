@@ -1,111 +1,66 @@
 # NutriPlan: Personalized Meal Management System
 
-NutriPlan is a full-stack web application designed for dynamic meal planning and user preference adaptation. Unlike static planners, NutriPlan implements a **weighted heuristic feedback loop** that "learns" user tastes through interaction, providing a personalized experience without the overhead of heavy machine learning models.
+NutriPlan is a production-ready, full-stack application designed to streamline meal planning through data-driven personalization. Rather than relying on static templates, the system implements a **weighted heuristic feedback loop** that adapts to a user's unique dietary profile and taste preferences over time.
 
 ## 🧠 Core Personalization Logic
+The project uses a transparent, **tag-based scoring engine** rather than a "black-box" AI approach:
 
-The system uses a transparent **Tag-Based Heuristic Scoring Engine** to refine recommendations:
-
-* 
-**Preference Matrix**: Every user profile contains a `tagScores` object in MongoDB.
-
-
-* 
-**Feedback Loop**: User actions—**Like**, **Dislike**, or **Reject**—trigger real-time updates to these scores (e.g., +2 for a Like, -2 for a Dislike).
-
-
-* 
-**Adaptive Generation**: The 7-day meal plan generator prioritizes meals by cross-referencing meal metadata tags against the user's highest-weighted scores in the database.
+* [cite_start]**Heuristic Scoring**: User interactions (Like/Dislike/Reject) trigger real-time updates to a weighted preference matrix[cite: 11, 46].
+* **Weighted Tags**: Meals are categorized by metadata tags (e.g., "Keto," "High-Protein"). [cite_start]When a user interacts with a meal, the system adjusts the scores of those specific tags within the user's MongoDB profile[cite: 11, 46].
+* [cite_start]**Adaptive Generation**: The 7-day plan generator prioritizes meals with the highest cumulative tag scores, ensuring the system "learns" taste patterns without the overhead of external ML models[cite: 46].
 
 
 
 ## 🚀 Engineering Highlights: Bypassing Port Restrictions
+[cite_start]A major technical milestone was resolving persistent **`ETIMEDOUT` errors** during production deployment on Render[cite: 48].
 
-A major technical milestone of this project was resolving persistent **`ETIMEDOUT` errors** during production deployment on Render.
-
-* **The Problem**: Standard cloud environments often block outbound traffic on SMTP ports (587/465) to prevent spam.
-* 
-**The Solution**: Migrated the entire email infrastructure from `nodemailer` (SMTP) to the **Brevo (formerly Sendinblue) RESTful HTTP API**.
-
-
-* 
-**Outcome**: By utilizing Port 443 (Standard HTTPS), the system achieved **100% email delivery reliability** for password recovery and OTP flows.
+* [cite_start]**The Problem**: Standard cloud environments (Render, Railway) often block outbound traffic on SMTP ports (587/465) to prevent spam[cite: 12, 48].
+* [cite_start]**The Solution**: Migrated the entire email infrastructure from `nodemailer` (SMTP) to the **Brevo (formerly Sendinblue) RESTful HTTP API**[cite: 12, 48].
+* [cite_start]**Outcome**: By utilizing Port 443 (Standard HTTPS), the system achieved **100% email delivery reliability** for password recovery and OTP flows[cite: 12, 48].
 
 
 
 ## 🛠️ Tech Stack
-
-* 
-**Frontend**: React.js (Vite) 
-
-
-* 
-**Backend**: Node.js, Express.js 
-
-
-* 
-**Database**: MongoDB Atlas (Mongoose ODM) 
-
-
-* 
-**Authentication**: JSON Web Tokens (JWT) & bcryptjs 
-
-
-* 
-**Email Service**: Brevo HTTP API v3 
-
-
-* 
-**Deployment**: Render (Backend) & Vercel (Frontend) 
-
-
+* **Frontend**: React.js (Vite)
+* **Backend**: Node.js, Express.js
+* [cite_start]**Database**: MongoDB Atlas (Mongoose ODM) [cite: 13, 49, 62]
+* [cite_start]**Authentication**: JSON Web Tokens (JWT) & bcryptjs [cite: 10, 49]
+* [cite_start]**Email Service**: Brevo HTTP API v3 [cite: 12, 48]
+* [cite_start]**Deployment**: Render (Backend) & Vercel (Frontend) [cite: 13, 62]
 
 ## 🔌 API Reference
 
 ### Authentication
-
 | Method | Endpoint | Description |
-| --- | --- | --- |
-| `POST` | `/api/auth/signup` | Register new user & initialize tag matrix.
-
- |
-| `POST` | `/api/auth/login` | Authenticate and receive JWT.
-
- |
-| `POST` | `/api/auth/forgot-password` | Trigger Brevo API to send recovery OTP.
-
- |
+| :--- | :--- | :--- |
+| `POST` | `/api/auth/signup` | Register new user & initialize tag matrix. |
+| `POST` | `/api/auth/login` | Authenticate and receive JWT. |
+| `POST` | `/api/auth/forgot-password`| [cite_start]Trigger Brevo API to send recovery OTP[cite: 12]. |
 
 ### User & Planning
-
 | Method | Endpoint | Description |
-| --- | --- | --- |
-| `GET` | `/api/generate-plan` | Generate a plan based on heuristic weights.
+| :--- | :--- | :--- |
+| `GET` | `/api/generate-plan` | [cite_start]Generate a 7-day plan based on heuristic weights[cite: 9]. |
+| `POST` | `/api/user/feedback` | [cite_start]Update tag scores based on Like/Dislike actions[cite: 11]. |
 
- |
-| `POST` | `/api/user/feedback` | Update tag scores based on Like/Dislike.
+## 📦 Installation & Configuration
 
- |
+1. **Clone the repository**:
+   ```bash
+   git clone [https://github.com/sanchita-88/NutriPlan.git](https://github.com/sanchita-88/NutriPlan.git)
+   cd NutriPlan
 
-## 🛡️ Security & Reliability
+```
 
-* 
-**CORS Management**: Configured environment-specific headers to allow secure communication between the Vercel frontend and Render backend.
+2. **Install dependencies**:
+```bash
+npm install
 
-
-* 
-**Password Hashing**: Utilizes `bcryptjs` for salt-and-hash encryption before database storage.
-
-
-* 
-**Route Protection**: Implemented a custom JWT middleware to verify sessions before accessing planning logic.
+```
 
 
-
-## 📦 Environment Setup
-
-To run this project locally, create a `.env` file in the root directory:
-
+3. **Configure Environment Variables**:
+Create a `.env` file in the root directory:
 ```env
 PORT=3000
 MONGO_URI=your_mongodb_connection_string
@@ -115,6 +70,25 @@ EMAIL_USER=your_verified_sender_email
 
 ```
 
----
 
-**Would you like me to add a "Technical Challenges" section detailing the specific code changes used for the Brevo API migration?**
+4. **Run the application**:
+```bash
+# Development mode
+npm run dev
+
+# Production mode
+npm start
+
+```
+
+
+
+## 🛡️ License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
+```
+
+Would you like me to help you create a **"Technical Challenges"** log to add to this README, specifically documenting how you debugged the SMTP issue?
+
+```
