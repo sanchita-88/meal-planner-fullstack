@@ -80,15 +80,3 @@ npm run dev
 npm start
 
 ```
-
-
-
-## 🛡️ License
-
-Distributed under the MIT License. See `LICENSE` for more information.
-
-```
-
-Would you like me to help you create a **"Technical Challenges"** log to add to this README, specifically documenting how you debugged the SMTP issue?
-
-```
