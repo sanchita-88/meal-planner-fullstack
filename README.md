@@ -5,28 +5,28 @@ NutriPlan is a production-ready, full-stack application designed to streamline m
 ## 🧠 Core Personalization Logic
 The project uses a transparent, **tag-based scoring engine** rather than a "black-box" AI approach:
 
-* [cite_start]**Heuristic Scoring**: User interactions (Like/Dislike/Reject) trigger real-time updates to a weighted preference matrix[cite: 11, 46].
-* **Weighted Tags**: Meals are categorized by metadata tags (e.g., "Keto," "High-Protein"). [cite_start]When a user interacts with a meal, the system adjusts the scores of those specific tags within the user's MongoDB profile[cite: 11, 46].
-* [cite_start]**Adaptive Generation**: The 7-day plan generator prioritizes meals with the highest cumulative tag scores, ensuring the system "learns" taste patterns without the overhead of external ML models[cite: 46].
+* **Heuristic Scoring**: User interactions (Like/Dislike/Reject) trigger real-time updates to a weighted preference matrix.
+* **Weighted Tags**: Meals are categorized by metadata tags (e.g., "Keto," "High-Protein"). When a user interacts with a meal, the system adjusts the scores of those specific tags within the user's MongoDB profile.
+* **Adaptive Generation**: The 7-day plan generator prioritizes meals with the highest cumulative tag scores, ensuring the system "learns" taste patterns without the overhead of external ML models.
 
 
 
 ## 🚀 Engineering Highlights: Bypassing Port Restrictions
-[cite_start]A major technical milestone was resolving persistent **`ETIMEDOUT` errors** during production deployment on Render[cite: 48].
+A major technical milestone was resolving persistent **`ETIMEDOUT` errors** during production deployment on Render.
 
-* [cite_start]**The Problem**: Standard cloud environments (Render, Railway) often block outbound traffic on SMTP ports (587/465) to prevent spam[cite: 12, 48].
-* [cite_start]**The Solution**: Migrated the entire email infrastructure from `nodemailer` (SMTP) to the **Brevo (formerly Sendinblue) RESTful HTTP API**[cite: 12, 48].
-* [cite_start]**Outcome**: By utilizing Port 443 (Standard HTTPS), the system achieved **100% email delivery reliability** for password recovery and OTP flows[cite: 12, 48].
+* **The Problem**: Standard cloud environments (Render, Railway) often block outbound traffic on SMTP ports (587/465) to prevent spam.
+* **The Solution**: Migrated the entire email infrastructure from `nodemailer` (SMTP) to the **Brevo (formerly Sendinblue) RESTful HTTP API**.
+* **Outcome**: By utilizing Port 443 (Standard HTTPS), the system achieved **100% email delivery reliability** for password recovery and OTP flows.
 
 
 
 ## 🛠️ Tech Stack
 * **Frontend**: React.js (Vite)
 * **Backend**: Node.js, Express.js
-* [cite_start]**Database**: MongoDB Atlas (Mongoose ODM) [cite: 13, 49, 62]
-* [cite_start]**Authentication**: JSON Web Tokens (JWT) & bcryptjs [cite: 10, 49]
-* [cite_start]**Email Service**: Brevo HTTP API v3 [cite: 12, 48]
-* [cite_start]**Deployment**: Render (Backend) & Vercel (Frontend) [cite: 13, 62]
+* **Database**: MongoDB Atlas (Mongoose ODM)
+* **Authentication**: JSON Web Tokens (JWT) & bcryptjs 
+* **Email Service**: Brevo HTTP API v3 
+* **Deployment**: Render (Backend) & Vercel (Frontend)
 
 ## 🔌 API Reference
 
